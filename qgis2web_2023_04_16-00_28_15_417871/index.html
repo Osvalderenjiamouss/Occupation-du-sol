@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css"><link rel="stylesheet" href="css/L.Control.Locate.min.css">
+        <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <link rel="stylesheet" href="css/leaflet-search.css">
+        <link rel="stylesheet" href="css/leaflet-measure.css">
+        <style>
+        #map {
+            width: 749px;
+            height: 494px;
+        }
+        </style>
+        <title></title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script><script src="js/L.Control.Locate.min.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="js/leaflet-measure.js"></script>
+        <script src="js/proj4.js"></script>
+        <script src="js/proj4leaflet.js"></script>
+        <script src="js/leaflet-search.js"></script>
+        <script src="data/Polygone_0.js"></script>
+        <script src="data/Pistes_1.js"></script>
+        <script src="data/Entitsponctuelles_2.js"></script>
+        <script>
+        var highlightLayer;
+        function highlightFeature(e) {
+            highlightLayer = e.target;
+            highlightLayer.openPopup();
+        }
+        var crs = new L.Proj.CRS('EPSG:32631', '+proj=utm +zone=31 +datum=WGS84 +units=m +no_defs', {
+            resolutions: [2800, 1400, 700, 350, 175, 84, 42, 21, 11.2, 5.6, 2.8, 1.4, 0.7, 0.35, 0.14, 0.07],
+        });
+        var map = L.map('map', {
+            crs: crs,
+            continuousWorld: false,
+            worldCopyJump: false, 
+            zoomControl:true, maxZoom:28, minZoom:1
+        }).fitBounds([[7.268312055082175,1.8022090205507064],[7.2747429408539555,1.811965239303176]]);
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        L.control.locate({locateOptions: {maxZoom: 19}}).addTo(map);
+        var measureControl = new L.Control.Measure({
+            position: 'topleft',
+            primaryLengthUnit: 'meters',
+            secondaryLengthUnit: 'kilometers',
+            primaryAreaUnit: 'sqmeters',
+            secondaryAreaUnit: 'hectares'
+        });
+        measureControl.addTo(map);
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0]
+        .innerHTML = '';
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0]
+        .className += ' fas fa-ruler';
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+        }
+        function pop_Polygone_0(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">id</th>\
+                        <td>' + (feature.properties['id'] !== null ? autolinker.link(feature.properties['id'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">nom</th>\
+                        <td>' + (feature.properties['nom'] !== null ? autolinker.link(feature.properties['nom'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">superficie</th>\
+                        <td>' + (feature.properties['superficie'] !== null ? autolinker.link(feature.properties['superficie'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        var pattern_Polygone_0_0 = new L.StripePattern({
+            weight: 0.2,
+            spaceWeight: 2.0,
+            color: '#000000',
+            opacity: 1.0,
+            spaceOpacity: 0,
+            angle: 315
+        });
+        pattern_Polygone_0_0.addTo(map);
+        function style_Polygone_0_0(feature) {
+            switch(String(feature.properties['nom'])) {
+                case 'Affleurrment rocheux':
+                    return {
+                pane: 'pane_Polygone_0',
+                stroke: false, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(174,201,157,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Bati':
+                    return {
+                pane: 'pane_Polygone_0',
+                stroke: false, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(10,0,2,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Chmps':
+                    return {
+                pane: 'pane_Polygone_0',
+                stroke: false, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(119,204,204,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Etable/enclos':
+                    return {
+                pane: 'pane_Polygone_0',
+                stroke: false,
+                fillOpacity: 1,
+                fillPattern: pattern_Polygone_0_0,
+                interactive: true,
+            }
+                    break;
+                case 'Jachere':
+                    return {
+                pane: 'pane_Polygone_0',
+                stroke: false, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(208,182,8,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Plantation banane':
+                    return {
+                pane: 'pane_Polygone_0',
+                stroke: false, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(175,232,41,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Plantation mélina':
+                    return {
+                pane: 'pane_Polygone_0',
+                interactive: true,
+            }
+                    break;
+                case 'Plantation teck':
+                    return {
+                pane: 'pane_Polygone_0',
+                stroke: false, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(64,219,150,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'planttion palmier':
+                    return {
+                pane: 'pane_Polygone_0',
+                stroke: false, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(83,221,37,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'planttion teck':
+                    return {
+                pane: 'pane_Polygone_0',
+                stroke: false, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(45,155,75,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Savane arbustive':
+                    return {
+                pane: 'pane_Polygone_0',
+                stroke: false, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(15,216,69,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'sol_nu':
+                    return {
+                pane: 'pane_Polygone_0',
+                stroke: false, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(237,158,31,1.0)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_Polygone_0');
+        map.getPane('pane_Polygone_0').style.zIndex = 400;
+        map.getPane('pane_Polygone_0').style['mix-blend-mode'] = 'normal';
+        var layer_Polygone_0 = new L.geoJson(json_Polygone_0, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Polygone_0',
+            layerName: 'layer_Polygone_0',
+            pane: 'pane_Polygone_0',
+            onEachFeature: pop_Polygone_0,
+            style: style_Polygone_0_0,
+        });
+        bounds_group.addLayer(layer_Polygone_0);
+        map.addLayer(layer_Polygone_0);
+        function pop_Pistes_1(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">Id</th>\
+                        <td>' + (feature.properties['Id'] !== null ? autolinker.link(feature.properties['Id'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Type</th>\
+                        <td>' + (feature.properties['Type'] !== null ? autolinker.link(feature.properties['Type'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Emprise</th>\
+                        <td>' + (feature.properties['Emprise'] !== null ? autolinker.link(feature.properties['Emprise'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Pistes_1_0() {
+            return {
+                pane: 'pane_Pistes_1',
+                opacity: 1,
+                color: 'rgba(219,30,42,1.0)',
+                dashArray: '',
+                lineCap: 'round',
+                lineJoin: 'round',
+                weight: 2.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Pistes_1');
+        map.getPane('pane_Pistes_1').style.zIndex = 401;
+        map.getPane('pane_Pistes_1').style['mix-blend-mode'] = 'normal';
+        var layer_Pistes_1 = new L.geoJson(json_Pistes_1, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Pistes_1',
+            layerName: 'layer_Pistes_1',
+            pane: 'pane_Pistes_1',
+            onEachFeature: pop_Pistes_1,
+            style: style_Pistes_1_0,
+        });
+        bounds_group.addLayer(layer_Pistes_1);
+        map.addLayer(layer_Pistes_1);
+        function pop_Entitsponctuelles_2(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">Id</th>\
+                        <td>' + (feature.properties['Id'] !== null ? autolinker.link(feature.properties['Id'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Nom</th>\
+                        <td>' + (feature.properties['Nom'] !== null ? autolinker.link(feature.properties['Nom'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">X</th>\
+                        <td>' + (feature.properties['X'] !== null ? autolinker.link(feature.properties['X'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Y</th>\
+                        <td>' + (feature.properties['Y'] !== null ? autolinker.link(feature.properties['Y'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Entitsponctuelles_2_0() {
+            return {
+                pane: 'pane_Entitsponctuelles_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(114,155,111,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Entitsponctuelles_2');
+        map.getPane('pane_Entitsponctuelles_2').style.zIndex = 402;
+        map.getPane('pane_Entitsponctuelles_2').style['mix-blend-mode'] = 'normal';
+        var layer_Entitsponctuelles_2 = new L.geoJson(json_Entitsponctuelles_2, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Entitsponctuelles_2',
+            layerName: 'layer_Entitsponctuelles_2',
+            pane: 'pane_Entitsponctuelles_2',
+            onEachFeature: pop_Entitsponctuelles_2,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Entitsponctuelles_2_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Entitsponctuelles_2);
+        map.addLayer(layer_Entitsponctuelles_2);
+        var baseMaps = {};
+        L.control.layers(baseMaps,{'<img src="legend/Entitsponctuelles_2.png" /> Entités ponctuelles ': layer_Entitsponctuelles_2,'<img src="legend/Pistes_1.png" /> Pistes': layer_Pistes_1,'Polygone<br /><table><tr><td style="text-align: center;"><img src="legend/Polygone_0_Affleurrmentrocheux0.png" /></td><td>Affleurrment rocheux</td></tr><tr><td style="text-align: center;"><img src="legend/Polygone_0_Bati1.png" /></td><td>Bati</td></tr><tr><td style="text-align: center;"><img src="legend/Polygone_0_Champs2.png" /></td><td>Champs</td></tr><tr><td style="text-align: center;"><img src="legend/Polygone_0_Etableenclos3.png" /></td><td>Etable/enclos</td></tr><tr><td style="text-align: center;"><img src="legend/Polygone_0_Jachère4.png" /></td><td>Jachère</td></tr><tr><td style="text-align: center;"><img src="legend/Polygone_0_Plantationbanane5.png" /></td><td>Plantation banane</td></tr><tr><td style="text-align: center;"><img src="legend/Polygone_0_Plantationmélina6.png" /></td><td>Plantation mélina</td></tr><tr><td style="text-align: center;"><img src="legend/Polygone_0_Plantationteck7.png" /></td><td>Plantation teck</td></tr><tr><td style="text-align: center;"><img src="legend/Polygone_0_plantationpalmier8.png" /></td><td>plantation palmier</td></tr><tr><td style="text-align: center;"><img src="legend/Polygone_0_planttionteck9.png" /></td><td>planttion teck</td></tr><tr><td style="text-align: center;"><img src="legend/Polygone_0_Savanearbustive10.png" /></td><td>Savane arbustive</td></tr><tr><td style="text-align: center;"><img src="legend/Polygone_0_solnu11.png" /></td><td>sol_nu</td></tr></table>': layer_Polygone_0,},{collapsed:false}).addTo(map);
+        setBounds();
+        map.addControl(new L.Control.Search({
+            layer: layer_Polygone_0,
+            initial: false,
+            hideMarkerOnCollapse: true,
+            propertyName: 'nom'}));
+        document.getElementsByClassName('search-button')[0].className +=
+         ' fa fa-binoculars';
+        </script>
+    </body>
+</html>
